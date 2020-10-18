@@ -11,9 +11,16 @@ class TasksController extends Controller
     // getでmessages/にアクセスされた場合の「一覧表示処理」
     public function index()
     {
+        
         if (\Auth::check()) {
+            
+            // 認証済みユーザを取得
+            $user = \Auth::user();
+            // ユーザの投稿の一覧を作成日時の降順で取得
+            $tasks = $user->tasks()->orderBy('created_at')->paginate(10);
+            
             // タスク一覧を取得
-            $tasks = Task::all();
+            //$tasks = Task::user()->tasks()->get();
 
             // タスク一覧ビューでそれを表示
             return view('tasks.index', [
